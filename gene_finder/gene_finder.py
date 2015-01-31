@@ -127,23 +127,19 @@ def find_all_ORFs_oneframe(dna):
     >>> find_all_ORFs_oneframe("TTATGGAATATG") #Test if it reads ORFs with start codon NOT on indices that are multiples of 3, but picks up later one
     ['ATG']
     """
-    # Initialize list of ORFS, dnaLeft
-    orf_list=[]
+    # Initialize list of ORFS
+    l=[]
     dnaLeft=dna
-    # Find first ATG start codon with index that is multiple of 3
-    atg_index=dnaLeft.find('ATG')
-    while atg_index!=-1 and atg_index%3!=0:
-        dnaLeft=dnaLeft[atg_index+3-atg_index%3:] # Both while loops must reference dnaLeft for continuity (atg_index is relative only to dnaLeft)
-        atg_index=dnaLeft.find('ATG')
-
-    # Check if start codon exists, is within same frame (multiple of 3)
-    # If not, add ORF to list
-    while atg_index != -1 and atg_index%3==0: #Multiple of 3 conditions is required for each iteration since the each substring before the last one is cut by a multiple of 3
-        orf=rest_of_ORF(dnaLeft[atg_index:])
-        orf_list.append(orf)
-        dnaLeft=dnaLeft[atg_index+len(orf):]
-        atg_index= dnaLeft.find('ATG')
-    return orf_list
+    i=0
+    # Find ATG start codon
+    while i<len(dna):
+        if dna[i:i+3]=='ATG':
+            orf=rest_of_ORF(dnaLeft[i:])
+            l.append(orf)
+            i=i+len(orf)
+        else:
+            i+=3
+    return l
 
 def find_all_ORFs(dna):
     """ Finds all non-nested open reading frames in the given DNA sequence in all 3
