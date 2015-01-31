@@ -28,7 +28,8 @@ def get_complement(nucleotide):
     'T'
     >>> get_complement('C')
     'G'
-    # checks edge case behavior for catch-all case (else statement), note else statement should never be triggered
+    >>> get_complement('a') # checks edge case behavior for catch-all case (else statement), note else statement should never be triggered
+    '!'
     >>> get_complement('-')
     '!'
     """
@@ -64,25 +65,18 @@ def get_reverse_complement(dna):
         i-=1
     return rev_comp
 
-def rest_of_ORF(dna):
+def rest_of_terminated_ORF(dna):
     """ Takes a DNA sequence that is assumed to begin with a start codon and returns
         the sequence up to but not including the first in frame stop codon.  If there
         is no in frame stop codon, returns the whole string.
 
-        NOTE: assumes there are no partial codons. Any partial codons will be cut off
+        NOTE: ANY PARTIAL CODONS WILL BE REMOVED FROM RETURNED STRING, rest_of_ORF will return strings as well that did not end with a stop codon
         
         dna: a DNA sequence
         returns: the open reading frame represented as a string
-    >>> rest_of_ORF("ATGTGAA")
-    'ATG'
-    >>> rest_of_ORF("ATGAGATAGG")
-    'ATGAGA'
-    # check partial codon cut (edge case behavior is as expected)
-    >>> rest_of_ORF("ATGAGATA")
-    'ATGAGA'
     """
     dna_rest=""
-    for i in range (0, len(dna)/3): # Note floor division for integer comparison, but shouldn't matter either way
+    for i in range (0, (len(dna)/3)+1): # Note floor division for integer comparison, but shouldn't matter either way, +1 to get to last complete codon
     #alt: while i < len(dna)/3
         # cuts and reads next codon
         codon=dna[i*3:i*3+3] #index = i*3, since every third character starts the next codon
@@ -92,6 +86,32 @@ def rest_of_ORF(dna):
         else: 
             dna_rest+=codon
     return dna_rest
+
+def rest_of_ORF(dna):
+    """ Takes a DNA sequence that is assumed to begin with a start codon and returns
+        the sequence up to but not including the first in frame stop codon.  If there
+        is no in frame stop codon, returns the whole string.
+
+        NOTE: return statement includes strings that were not followed by a stop codon
+        
+        dna: a DNA sequence
+        returns: the open reading frame represented as a string
+    >>> rest_of_ORF("ATGTGAA")
+    'ATG'
+    >>> rest_of_ORF("ATGAGATAGG")
+    'ATGAGA'
+    >>> rest_of_ORF("ATGAGACCC") # Edge case without stop codon
+    'ATGAGACCC'
+    """
+    dna_rest=""
+    stop_index=len(dna)
+    for i in range (0, len(dna)/3): # Note floor division for integer comparison, but shouldn't matter either way
+        # cuts and reads next codon
+        codon=dna[i*3:i*3+3] #index = i*3, since every third character starts the next codon
+        # checks for stop codons TAG, TAA, TGA
+        if codon=="TAG" or codon=="TAA" or codon=="TGA":
+            stop_index=i*3
+    return dna[0:stop_index]
 
 def find_all_ORFs_oneframe(dna):
     """ Finds all non-nested open reading frames in the given DNA sequence and returns
@@ -104,9 +124,26 @@ def find_all_ORFs_oneframe(dna):
         returns: a list of non-nested ORFs
     >>> find_all_ORFs_oneframe("ATGCATGAATGTAGATAGATGTGCCC")
     ['ATGCATGAATGTAGA', 'ATGTGCCC']
+    >>> find_all_ORFs_oneframe("TTATGGAATATG") #Test if it reads ORFs with start codon NOT on indices that are multiples of 3, but picks up later one
+    ['ATG']
     """
-    # TODO: implement this
-    pass
+    # Initialize list of ORFS, dnaLeft
+    orf_list=[]
+    dnaLeft=dna
+    # Find first ATG start codon with index that is multiple of 3
+    atg_index=dnaLeft.find('ATG')
+    while atg_index!=-1 and atg_index%3!=0:
+        dnaLeft=dnaLeft[atg_index+3-atg_index%3:] # Both while loops must reference dnaLeft for continuity (atg_index is relative only to dnaLeft)
+        atg_index=dnaLeft.find('ATG')
+
+    # Check if start codon exists, is within same frame (multiple of 3)
+    # If not, add ORF to list
+    while atg_index != -1 and atg_index%3==0: #Multiple of 3 conditions is required for each iteration since the each substring before the last one is cut by a multiple of 3
+        orf=rest_of_ORF(dnaLeft[atg_index:])
+        orf_list.append(orf)
+        dnaLeft=dnaLeft[atg_index+len(orf):]
+        atg_index= dnaLeft.find('ATG')
+    return orf_list
 
 def find_all_ORFs(dna):
     """ Finds all non-nested open reading frames in the given DNA sequence in all 3
@@ -117,11 +154,16 @@ def find_all_ORFs(dna):
         dna: a DNA sequence
         returns: a list of non-nested ORFs
 
+        NOTE: An alternative is to combine find_all_ORFs with find_all_ORFs_oneframe. Instead of splitting into three reading frames, find indices for all ATG start codons and find corresponding ORF
+
     >>> find_all_ORFs("ATGCATGAATGTAG")
     ['ATGCATGAATGTAG', 'ATGAATGTAG', 'ATG']
     """
-    # TODO: implement this
-    pass
+    # loop through dna, with starting offsets of 0, 1, 2 (each offset corresponds to a different reading frame)
+    orf_list=[]
+    for offset in range (0,3): #range from 0-3 to get 0,1,2
+        orf_list.extend(find_all_ORFs_oneframe(dna[offset:]))
+    return orf_list
 
 def find_all_ORFs_both_strands(dna):
     """ Finds all non-nested open reading frames in the given DNA sequence on both
@@ -132,8 +174,12 @@ def find_all_ORFs_both_strands(dna):
     >>> find_all_ORFs_both_strands("ATGCGAATGTAGCATCAAA")
     ['ATGCGAATG', 'ATGCTACATTCGCAT']
     """
-    # TODO: implement this
-    pass
+    # get reverse complement
+    complement=get_reverse_complement(dna)
+    # extend list to include complement's ORFs
+    orf_list=find_all_ORFs(dna)
+    orf_list.extend(find_all_ORFs(complement))
+    return orf_list
 
 
 def longest_ORF(dna):
