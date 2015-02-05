@@ -184,8 +184,12 @@ def longest_ORF(dna):
     >>> longest_ORF("ATGCGAATGTAGCATCAAA")
     'ATGCTACATTCGCAT'
     """
-    # TODO: implement this
-    pass
+    orfs=find_all_ORFs_both_strands(dna)
+    long_orf=orfs[0]
+    for frame in orfs:
+        if len(frame)>len(long_orf):
+            long_orf=frame
+    return long_orf
 
 
 def longest_ORF_noncoding(dna, num_trials):
@@ -195,8 +199,13 @@ def longest_ORF_noncoding(dna, num_trials):
         dna: a DNA sequence
         num_trials: the number of random shuffles
         returns: the maximum length longest ORF """
-    # TODO: implement this
-    pass
+    record_orf=""
+    for i in range(num_trials):
+        shuffle=shuffle_string(dna)
+        test_orf=longest_ORF(shuffle)
+        if len(test_orf)>len(record_orf):
+            record_orf=test_orf
+    return record_orf
 
 def coding_strand_to_AA(dna):
     """ Computes the Protein encoded by a sequence of DNA.  This function
@@ -212,8 +221,15 @@ def coding_strand_to_AA(dna):
         >>> coding_strand_to_AA("ATGCCCGCTTT")
         'MPA'
     """
-    # TODO: implement this
-    pass
+    # initialize aa strand
+    aa_strand=""
+    # read codons
+    for codon_index in range(0,len(dna),3):
+        if len(dna)-codon_index>2:
+            cod=dna[codon_index:codon_index+3]
+            amino_acid=aa_table[cod]
+            aa_strand+=amino_acid
+    return aa_strand
 
 def gene_finder(dna):
     """ Returns the amino acid sequences that are likely coded by the specified dna
@@ -221,9 +237,20 @@ def gene_finder(dna):
         dna: a DNA sequence
         returns: a list of all amino acid sequences coded by the sequence dna.
     """
-    # TODO: implement this
-    pass
+    aa_list=[]
+    # calculate threshold, arbitrarily set to 95% of len(longest_orf_noncoding)
+    threshold=.95*len(longest_ORF_noncoding(dna,1500))
+    orfs=find_all_ORFs_both_strands(dna)
+    for each in orfs:
+        if len(each)>threshold:
+            aa_list.append(coding_strand_to_AA(each))
+    return aa_list
 
 if __name__ == "__main__":
-    import doctest
-    doctest.testmod()
+    #import doctest
+    #doctest.testmod()
+    from load import load_seq
+    dna = load_seq("./data/X73525.fa")
+    res= gene_finder(dna)
+    print len(res)
+    print res
