@@ -205,7 +205,7 @@ def longest_ORF_noncoding(dna, num_trials):
         test_orf=longest_ORF(shuffle)
         if len(test_orf)>len(record_orf):
             record_orf=test_orf
-    return record_orf
+    return len(record_orf)
 
 def coding_strand_to_AA(dna):
     """ Computes the Protein encoded by a sequence of DNA.  This function
@@ -239,7 +239,7 @@ def gene_finder(dna):
     """
     aa_list=[]
     # calculate threshold, arbitrarily set to 95% of len(longest_orf_noncoding)
-    threshold=.95*len(longest_ORF_noncoding(dna,1500))
+    threshold=longest_ORF_noncoding(dna,1500)
     orfs=find_all_ORFs_both_strands(dna)
     for each in orfs:
         if len(each)>threshold:
@@ -254,3 +254,4 @@ if __name__ == "__main__":
     res= gene_finder(dna)
     print len(res)
     print res
+d
