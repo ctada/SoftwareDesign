@@ -65,6 +65,7 @@ def get_reverse_complement(dna):
         i-=1
     return rev_comp
 
+#NEVER CALLED
 def rest_of_terminated_ORF(dna):
     """ Takes a DNA sequence that is assumed to begin with a start codon and returns
         the sequence up to but not including the first in frame stop codon.  If there
@@ -105,12 +106,12 @@ def rest_of_ORF(dna):
     """
     dna_rest=""
     stop_index=len(dna)
-    for i in range (0, len(dna)/3): # Note floor division for integer comparison, but shouldn't matter either way
+    for i in range (0, len(dna),3): # Note floor division for integer comparison, but shouldn't matter either way
         # cuts and reads next codon
-        codon=dna[i*3:i*3+3] #index = i*3, since every third character starts the next codon
+        codon=dna[i:i+3] #ends just before i+3
         # checks for stop codons TAG, TAA, TGA
         if codon=="TAG" or codon=="TAA" or codon=="TGA":
-            stop_index=i*3
+            stop_index=i
     return dna[0:stop_index]
 
 def find_all_ORFs_oneframe(dna):
@@ -254,4 +255,3 @@ if __name__ == "__main__":
     res= gene_finder(dna)
     print len(res)
     print res
-d
