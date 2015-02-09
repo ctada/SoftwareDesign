@@ -112,6 +112,7 @@ def rest_of_ORF(dna):
         # checks for stop codons TAG, TAA, TGA
         if codon=="TAG" or codon=="TAA" or codon=="TGA":
             stop_index=i
+            break
     return dna[0:stop_index]
 
 def find_all_ORFs_oneframe(dna):
@@ -239,7 +240,6 @@ def gene_finder(dna):
         returns: a list of all amino acid sequences coded by the sequence dna.
     """
     aa_list=[]
-    # calculate threshold, arbitrarily set to 95% of len(longest_orf_noncoding)
     threshold=longest_ORF_noncoding(dna,1500)
     orfs=find_all_ORFs_both_strands(dna)
     for each in orfs:
