@@ -1,9 +1,9 @@
-""" TODO: Put your header comment here """
+""" Recursive art, code generated as part of Software Design course, Spring 2015. Author: Celine Ta, scaffold provided by instructors."""
+
 import math
 import random
 from PIL import Image
 import pdb
-
 
 def build_random_function(min_depth, max_depth):
     """ Builds a random function of depth at least min_depth and depth
@@ -13,6 +13,7 @@ def build_random_function(min_depth, max_depth):
         min_depth: the minimum depth of the random function
         max_depth: the maximum depth of the random function
         returns: the randomly generated function represented as a nested list
+
                 Nested list should consist of the following: 
                 prod(a,b) = ab
                 avg(a,b) = 0.5*(a+b)
@@ -49,6 +50,7 @@ def build_random_function(min_depth, max_depth):
 
 
 def evaluate_random_function(gen_func, x, y=1):
+ 
     """ Evaluate the random function f with inputs x,y
         Representation of the function f is defined in the assignment writeup
 
@@ -126,7 +128,6 @@ def remap_interval(val, input_interval_start, input_interval_end, output_interva
     proportion= float(val - input_interval_start)/(input_interval_end - input_interval_start)
     return proportion*(output_interval_end - output_interval_start) + output_interval_start
 
-
 def color_map(val):
     """ Maps input value between -1 and 1 to an integer 0-255, suitable for
         use as an RGB color code.
@@ -176,16 +177,16 @@ def generate_art(filename, x_size=350, y_size=350):
         x_size, y_size: optional args to set image dimensions (default: 350)
     """
     # Functions for red, green, and blue channels - where the magic happens!
-    red_function = build_random_function(4,7)
-    green_function = build_random_function(4,7)
-    blue_function = build_random_function(4,7)
- 
+    red_function = build_random_function(7,9)
+    green_function = build_random_function(7,9)
+    blue_function = build_random_function(7,9)
+
     # Create image and loop over all pixels
     im = Image.new("RGB", (x_size, y_size))
     pixels = im.load()
     for i in range(x_size):
         for j in range(y_size):
-            print "i", i, "j", j
+            #print "i", i, "j", j
             x = remap_interval(i, 0, x_size, -1, 1)
             y = remap_interval(j, 0, y_size, -1, 1)
             pixels[i, j] = (
@@ -193,11 +194,13 @@ def generate_art(filename, x_size=350, y_size=350):
                     color_map(evaluate_random_function(green_function, x, y)),
                     color_map(evaluate_random_function(blue_function, x, y))
                     )
+
     im.save(filename)
 
 
 if __name__ == '__main__':
     import doctest
+D
     #doctest.run_docstring_examples(remap_interval, globals())
     #doctest.testmod()
     
