@@ -23,15 +23,9 @@ def build_random_function(min_depth, max_depth):
                 rad(a) = sqrt(a**2 + b**2)
         TODO: make doctests
     """
-    # TODO: implement this
-    func = pickfunc(depth)
     depth = random.randint(min_depth, max_depth)
-    func.append(pickfunc(depth-1))
-
-    return func.append(build_random_function(depth))
-
-def pickfunc(n):
-    if n==1:
+    
+    if depth==1:
         choice = random.randint(1,2)
         if choice==1:
             return ["x"]
@@ -40,17 +34,17 @@ def pickfunc(n):
     else:
         choice = random.randint(1,6)
         if choice==1:
-            return ["cos_pi", pickfunc(n-1)]
+            return ["cos_pi", build_random_function(depth-1, depth-1)]
         if choice==2:
-            return ["sin_pi", pickfunc(n-1)]
+            return ["sin_pi", build_random_function(depth-1, depth-1)]
         if choice==3:
-            return ["rnd", pickfunc(n-1)]
+            return ["rnd", build_random_function(depth-1, depth-1)]
         if choice==4:
-            return ["avg", pickfunc(n-1), pickfunc(n-1)]
+            return ["avg", build_random_function(depth-1, depth-1), build_random_function(depth-1, depth-1)]
         if choice==5:
-            return ["prod", pickfunc(n-1), pickfunc(n-1)]
+            return ["prod", build_random_function(depth-1, depth-1), build_random_function(depth-1, depth-1)]
         if choice==6:
-            return ["rad", pickfunc(n-1), pickfunc(n-1)]
+            return ["rad", build_random_function(depth-1, depth-1), build_random_function(depth-1, depth-1)]
 
 
 def evaluate_random_function(f, x, y=1):
@@ -200,7 +194,7 @@ if __name__ == '__main__':
     import doctest
     #doctest.run_docstring_examples(remap_interval, globals())
     #doctest.testmod()
-    print pickfunc(3)
+    print build_random_function(3,3)
 
     # Create some computational art!
     # TODO: Un-comment the generate_art function call after you
