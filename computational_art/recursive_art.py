@@ -31,21 +31,21 @@ def build_random_function(min_depth, max_depth):
         choice = random.randint(1,2)
         if choice==1:
             return ["x"]
-        if choice==2:
+        elif choice==2:
             return ["y"]
     else:
         choice = random.randint(1,6)
         if choice==1:
             return ["cos_pi", build_random_function(depth-1, depth-1)]
-        if choice==2:
+        elif choice==2:
             return ["sin_pi", build_random_function(depth-1, depth-1)]
-        if choice==3:
+        elif choice==3:
             return ["rnd", build_random_function(depth-1, depth-1)]
-        if choice==4:
+        elif choice==4:
             return ["avg", build_random_function(depth-1, depth-1), build_random_function(depth-1, depth-1)]
-        if choice==5:
+        elif choice==5:
             return ["prod", build_random_function(depth-1, depth-1), build_random_function(depth-1, depth-1)]
-        if choice==6:
+        elif choice==6:
             return ["rad", build_random_function(depth-1, depth-1), build_random_function(depth-1, depth-1)]
 
 
