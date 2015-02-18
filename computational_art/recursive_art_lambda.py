@@ -29,29 +29,28 @@ def build_random_function(min_depth, max_depth):
         TODO: make doctests
     """
     depth = random.randint(min_depth, max_depth)
-    
     if depth==1:
         choice = random.randint(1,2)
         if choice==1:
             return lambda x,y: x
-        if choice==2:
+        elif choice==2:
             return lambda x,y: y
     else:
         choice = random.randint(1,6)
         if choice==1: #cosine
             return lambda x, y: cos(pi*build_random_function(depth-1, depth-1)(x,y))
-        if choice==2: #sine
+        elif choice==2: #sine
             return lambda x, y: sin(pi*build_random_function(depth-1, depth-1)(x,y))
-        if choice==3: #round
+        elif choice==3: #round
             return lambda x, y: round(build_random_function(depth-1, depth-1)(x,y))
-        if choice==4: #avg
+        elif choice==4: #avg
             return lambda x, y: (build_random_function(depth-1, depth-1)(x,y)+build_random_function(depth-1, depth-1)(x,y))*.5
-        if choice==5: #prod
+        elif choice==5: #prod
             return lambda x, y: build_random_function(depth-1, depth-1)(x,y)*build_random_function(depth-1, depth-1)(x,y)
-        if choice==6: #distance
+        elif choice==6: #distance
             return lambda x, y: sqrt((build_random_function(depth-1, depth-1)(x,y))**2+(build_random_function(depth-1, depth-1)(x,y))**2)
 
-def evaluate_random_function(gen_func, x, y=1):
+def evaluate_random_function(gen_func, x, y):
  
     """ Evaluate the random function f with inputs x,y
         Representation of the function f is defined in the assignment writeup
@@ -86,7 +85,8 @@ def evaluate_random_function(gen_func, x, y=1):
         >>> evaluate_random_function(["rad"],0.7,0.4)
         0.8062257748298549
     """
-    return build_random_function(7,9)(x,y)
+
+    return gen_func(x,y)
 
 def remap_interval(val, input_interval_start, input_interval_end, output_interval_start, output_interval_end):
     """ Given an input value in the interval [input_interval_start,
@@ -164,23 +164,22 @@ def generate_art(filename, x_size=350, y_size=350):
         filename: string filename for image (should be .png)
         x_size, y_size: optional args to set image dimensions (default: 350)
     """
-    # Functions for red, green, and blue channels - where the magic happens!
-    red_function = build_random_function(7,9)
-    green_function = build_random_function(7,9)
-    blue_function = build_random_function(7,9)
+    red_func=build_random_function(7,9)
+    green_func=build_random_function(7,9)
+    blue_func=build_random_function(7,9)
 
     # Create image and loop over all pixels
     im = Image.new("RGB", (x_size, y_size))
     pixels = im.load()
     for i in range(x_size):
         for j in range(y_size):
-            #print "i", i, "j", j
+            print "i", i, "j", j
             x = remap_interval(i, 0, x_size, -1, 1)
             y = remap_interval(j, 0, y_size, -1, 1)
             pixels[i, j] = (
-                    color_map(evaluate_random_function(red_function, x, y)),
-                    color_map(evaluate_random_function(green_function, x, y)),
-                    color_map(evaluate_random_function(blue_function, x, y))
+                    color_map(evaluate_random_function(red_func, x, y)),
+                    color_map(evaluate_random_function(green_func, x, y)),
+                    color_map(evaluate_random_function(blue_func, x, y))
                     )
 
     im.save(filename)
@@ -195,10 +194,7 @@ if __name__ == '__main__':
     # Create some computational art!
     # TODO: Un-comment the generate_art function call after you
     #       implement remap_interval and evaluate_random_function
-    f=build_random_function(1,1)
-    print f
-    print evaluate_random_function(3,3)
-    #generate_art("myart1_lambda.png")
+    generate_art("myart1_lambda.png")
 
     # Test that PIL is installed correctly
     # TODO: Comment or remove this function call after testing PIL install
