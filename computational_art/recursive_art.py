@@ -32,9 +32,9 @@ def build_random_function(min_depth, max_depth):
 
     else:
         choice = random.randint(3,8)
-        if choice in range(3,5):
+        if choice in range(3,6):
             return [tel[choice], build_random_function(depth-1, depth-1)]
-        elif choice in range(5,9):
+        elif choice in range(6,9):
             return [tel[choice], build_random_function(depth-1, depth-1), build_random_function(depth-1, depth-1)]
 
 def evaluate_random_function(gen_func, x, y=1):
