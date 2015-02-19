@@ -38,17 +38,23 @@ def build_random_function(min_depth, max_depth):
     else:
         choice = random.randint(1,6)
         if choice==1: #cosine
-            return lambda x, y: cos(pi*build_random_function(depth-1, depth-1)(x,y))
+            cs= lambda x, y: cos(pi*build_random_function(depth-1, depth-1)(x,y))
+            return cs
         elif choice==2: #sine
-            return lambda x, y: sin(pi*build_random_function(depth-1, depth-1)(x,y))
+            s= lambda x, y: sin(pi*build_random_function(depth-1, depth-1)(x,y))
+            return s
         elif choice==3: #round
-            return lambda x, y: round(build_random_function(depth-1, depth-1)(x,y))
+            rn= lambda x, y: round(build_random_function(depth-1, depth-1)(x,y))
+            return rn
         elif choice==4: #avg
-            return lambda x, y: (build_random_function(depth-1, depth-1)(x,y)+build_random_function(depth-1, depth-1)(x,y))*.5
+            av= lambda x, y: (build_random_function(depth-1, depth-1)(x,y)+build_random_function(depth-1, depth-1)(x,y))*.5
+            return av
         elif choice==5: #prod
-            return lambda x, y: build_random_function(depth-1, depth-1)(x,y)*build_random_function(depth-1, depth-1)(x,y)
+            pr= lambda x, y: build_random_function(depth-1, depth-1)(x,y)*build_random_function(depth-1, depth-1)(x,y)
+            return pr
         elif choice==6: #distance
-            return lambda x, y: sqrt((build_random_function(depth-1, depth-1)(x,y))**2+(build_random_function(depth-1, depth-1)(x,y))**2)
+            dis= lambda x, y: sqrt((build_random_function(depth-1, depth-1)(x,y))**2+(build_random_function(depth-1, depth-1)(x,y))**2)
+            return dis
 
 def evaluate_random_function(gen_func, x, y):
  
@@ -194,7 +200,7 @@ if __name__ == '__main__':
     # Create some computational art!
     # TODO: Un-comment the generate_art function call after you
     #       implement remap_interval and evaluate_random_function
-    generate_art("myart1_lambda.png")
+    generate_art("myart2_lambda.png")
 
     # Test that PIL is installed correctly
     # TODO: Comment or remove this function call after testing PIL install
