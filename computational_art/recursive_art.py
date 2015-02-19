@@ -26,28 +26,16 @@ def build_random_function(min_depth, max_depth):
         TODO: make doctests
     """
     depth = random.randint(min_depth, max_depth)
-    
+    tel = {1: "x", 2: "y", 3: "cos_pi", 4:"sin_pi", 5:"rnd", 6:"avg", 7:"prod", 8:"rad"}
     if depth==1:
-        choice = random.randint(1,2)
-        if choice==1:
-            return ["x"]
-        elif choice==2:
-            return ["y"]
-    else:
-        choice = random.randint(1,6)
-        if choice==1:
-            return ["cos_pi", build_random_function(depth-1, depth-1)]
-        elif choice==2:
-            return ["sin_pi", build_random_function(depth-1, depth-1)]
-        elif choice==3:
-            return ["rnd", build_random_function(depth-1, depth-1)]
-        elif choice==4:
-            return ["avg", build_random_function(depth-1, depth-1), build_random_function(depth-1, depth-1)]
-        elif choice==5:
-            return ["prod", build_random_function(depth-1, depth-1), build_random_function(depth-1, depth-1)]
-        elif choice==6:
-            return ["rad", build_random_function(depth-1, depth-1), build_random_function(depth-1, depth-1)]
+        return [tel[random.randint(1,2)]]
 
+    else:
+        choice = random.randint(3,8)
+        if choice in range(3,5):
+            return [tel[choice], build_random_function(depth-1, depth-1)]
+        elif choice in range(5,9):
+            return [tel[choice], build_random_function(depth-1, depth-1), build_random_function(depth-1, depth-1)]
 
 def evaluate_random_function(gen_func, x, y=1):
  
@@ -186,7 +174,7 @@ def generate_art(filename, x_size=350, y_size=350):
     pixels = im.load()
     for i in range(x_size):
         for j in range(y_size):
-            #print "i", i, "j", j
+            print "i", i, "j", j
             x = remap_interval(i, 0, x_size, -1, 1)
             y = remap_interval(j, 0, y_size, -1, 1)
             pixels[i, j] = (
@@ -200,14 +188,13 @@ def generate_art(filename, x_size=350, y_size=350):
 
 if __name__ == '__main__':
     import doctest
-D
     #doctest.run_docstring_examples(remap_interval, globals())
     #doctest.testmod()
     
     # Create some computational art!
     # TODO: Un-comment the generate_art function call after you
     #       implement remap_interval and evaluate_random_function
-    generate_art("myart1_47.png")
+    generate_art("myart2_79dict.png")
 
     # Test that PIL is installed correctly
     # TODO: Comment or remove this function call after testing PIL install
