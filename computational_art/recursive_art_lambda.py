@@ -37,24 +37,22 @@ def build_random_function(min_depth, max_depth):
             return lambda x,y: y
     else:
         choice = random.randint(1,6)
+        f = build_random_function(depth -1 , depth - 1)
         if choice==1: #cosine
-            cs= lambda x, y: cos(pi*build_random_function(depth-1, depth-1)(x,y))
-            return cs
+            return lambda x, y: cos(pi*f(x,y))
         elif choice==2: #sine
-            s= lambda x, y: sin(pi*build_random_function(depth-1, depth-1)(x,y))
-            return s
+            return lambda x, y: sin(pi * f(x,y))
         elif choice==3: #round
-            rn= lambda x, y: round(build_random_function(depth-1, depth-1)(x,y))
-            return rn
+            return lambda x, y: round(f(x,y))
         elif choice==4: #avg
-            av= lambda x, y: (build_random_function(depth-1, depth-1)(x,y)+build_random_function(depth-1, depth-1)(x,y))*.5
-            return av
+            g = build_random_function(depth-1, depth-1)
+            return lambda x, y: (f(x,y)+g(x,y))*.5
         elif choice==5: #prod
-            pr= lambda x, y: build_random_function(depth-1, depth-1)(x,y)*build_random_function(depth-1, depth-1)(x,y)
-            return pr
+            g = build_random_function(depth-1, depth-1)
+            return lambda x, y: f(x,y)* g(x,y)
         elif choice==6: #distance
-            dis= lambda x, y: sqrt((build_random_function(depth-1, depth-1)(x,y))**2+(build_random_function(depth-1, depth-1)(x,y))**2)
-            return dis
+            g = build_random_function(depth - 1, depth - 1)
+            return lambda x, y: sqrt((f(x,y))**2+(g(x,y))**2)
 
 def evaluate_random_function(gen_func, x, y):
  
@@ -92,7 +90,9 @@ def evaluate_random_function(gen_func, x, y):
         0.8062257748298549
     """
 
-    return gen_func(x,y)
+    a = gen_func(x,y)
+    # print a
+    return a
 
 def remap_interval(val, input_interval_start, input_interval_end, output_interval_start, output_interval_end):
     """ Given an input value in the interval [input_interval_start,
@@ -179,7 +179,7 @@ def generate_art(filename, x_size=350, y_size=350):
     pixels = im.load()
     for i in range(x_size):
         for j in range(y_size):
-            print "i", i, "j", j
+            # print "i", i, "j", j
             x = remap_interval(i, 0, x_size, -1, 1)
             y = remap_interval(j, 0, y_size, -1, 1)
             pixels[i, j] = (
@@ -205,3 +205,4 @@ if __name__ == '__main__':
     # Test that PIL is installed correctly
     # TODO: Comment or remove this function call after testing PIL install
     #test_image("noise.png")
+    
