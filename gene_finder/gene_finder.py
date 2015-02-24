@@ -2,7 +2,7 @@
 """
 Created on Sun Feb  2 11:24:42 2014
 
-@author: YOUR NAME HERE
+@author: Celine :)
 
 """
 
@@ -42,7 +42,7 @@ def get_complement(nucleotide):
     elif nucleotide=='G':
         return 'C'
     else:
-        return '!'
+        return 'Nucleotide not found' #Nice error checking, being more descriptive will help debugging in future
 
 def get_reverse_complement(dna):
     """ Computes the reverse complementary sequence of DNA for the specfied DNA
@@ -60,33 +60,12 @@ def get_reverse_complement(dna):
     i=len(dna)-1
     rev_comp=""
     # alternately, for i in range (0,len(dna)): rev_comp+=get_complement(dna[len(dna)-i])
-    while i >=0:
+    while i >=0: #while loops are great, but for loops avoid infinite looping
         rev_comp+=get_complement(dna[i])
         i-=1
     return rev_comp
 
-#NEVER CALLED
-def rest_of_terminated_ORF(dna):
-    """ Takes a DNA sequence that is assumed to begin with a start codon and returns
-        the sequence up to but not including the first in frame stop codon.  If there
-        is no in frame stop codon, returns the whole string.
-
-        NOTE: ANY PARTIAL CODONS WILL BE REMOVED FROM RETURNED STRING, rest_of_ORF will return strings as well that did not end with a stop codon
-        
-        dna: a DNA sequence
-        returns: the open reading frame represented as a string
-    """
-    dna_rest=""
-    for i in range (0, (len(dna)/3)+1): # Note floor division for integer comparison, but shouldn't matter either way, +1 to get to last complete codon
-    #alt: while i < len(dna)/3
-        # cuts and reads next codon
-        codon=dna[i*3:i*3+3] #index = i*3, since every third character starts the next codon
-        # checks for stop codons TAG, TAA, TGA
-        if codon=="TAG" or codon=="TAA" or codon=="TGA":
-            return dna_rest
-        else: 
-            dna_rest+=codon
-    return dna_rest
+#Delete code that is not necessary to run, keep your final version of code as clean as possible.
 
 def rest_of_ORF(dna):
     """ Takes a DNA sequence that is assumed to begin with a start codon and returns
