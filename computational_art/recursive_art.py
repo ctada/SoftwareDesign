@@ -1,4 +1,5 @@
-""" Recursive art, code generated as part of Software Design course, Spring 2015. Author: Celine Ta, scaffold provided by instructors."""
+""" Recursive art, code generated as part of Software Design course, Spring 2015. 
+Author: Celine Ta, scaffold provided by instructors.""" #make line breaks when necessary
 
 import math
 import random
@@ -14,7 +15,7 @@ def build_random_function(min_depth, max_depth):
         max_depth: the maximum depth of the random function
         returns: the randomly generated function represented as a nested list
 
-                Nested list should consist of the following: 
+                Nested list should consist of the following:  <--Nice comments, much appreciated.
                 prod(a,b) = ab
                 avg(a,b) = 0.5*(a+b)
                 cos_pi(a) = cos(pi*a)
@@ -113,7 +114,8 @@ def remap_interval(val, input_interval_start, input_interval_end, output_interva
         >>> remap_interval(0.0,-1,1,0,255)
         127.5
     """
-    proportion= float(val - input_interval_start)/(input_interval_end - input_interval_start)
+    #proportion= float(val - input_interval_start)/(input_interval_end - input_interval_start)
+    proportion= (val - input_interval_start)./(input_interval_end - input_interval_start) #works too
     return proportion*(output_interval_end - output_interval_start) + output_interval_start
 
 def color_map(val):
@@ -174,7 +176,7 @@ def generate_art(filename, x_size=350, y_size=350):
     pixels = im.load()
     for i in range(x_size):
         for j in range(y_size):
-            print "i", i, "j", j
+            print "i", i, "j", j #Please have some mercy and don't print things in long looping functions
             x = remap_interval(i, 0, x_size, -1, 1)
             y = remap_interval(j, 0, y_size, -1, 1)
             pixels[i, j] = (
@@ -188,7 +190,7 @@ def generate_art(filename, x_size=350, y_size=350):
 
 if __name__ == '__main__':
     import doctest
-    #doctest.run_docstring_examples(remap_interval, globals())
+    #doctest.run_docstring_examples(remap_interval, globals()) <--Delete test code
     #doctest.testmod()
     
     # Create some computational art!
