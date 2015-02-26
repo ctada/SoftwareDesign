@@ -8,7 +8,7 @@ from pattern.nl import sentiment as sentimentNL
 import numpy as np
 import matplotlib.pyplot as plt
 from math import fabs
-
+"""
 # import and parse through text
 engine = Google(license=None) # Enter your license key.
 posTotal= 0.0
@@ -86,22 +86,23 @@ for i in range(5): #first five pages
 		avgSubject= subTotal/sentIndex	# average subjectivity
 		controversy = (variation + avgSubject)/2.
 deRes=(avgPos, controversy) #storing
-
+"""
 # Graph all
-
+keyterm = "Sample Search Term"
 N = 3
 #compPos   = (engRes[0], frRes[0], deRes[0])
 #compContro = (engRes[1], frRes[1], deRes[1])
 fakeCompPos = (0.003, -.045, .00016)
+fakeCompContro = (.06, .0047, .0001)
 ind = np.arange(N)    # the x locations for the groups
 width = 0.35       # the width of the bars: can also be len(x) sequence
 
 p1 = plt.bar(ind, fakeCompPos,   width, color='r')
-p2 = plt.bar(ind, compContro, width, color='y') #to add second column for average subjectivity by language
+p2 = plt.bar(ind + width, fakeCompContro, width, color='y') #to add second column for average subjectivity by language
 
 plt.ylabel('Positivity towards search term')
 plt.title('Positivity by language spoken')
-plt.xticks(ind+width/2., ('English', 'French', 'Dutch') )
+plt.xticks(ind+width, ('English', 'French', 'Dutch') )
 plt.yticks(np.arange(-.5,.5,.1))
 plt.legend( (p1[0], p2[0]), ('Positivity', 'Controversy') )
 plt.savefig(keyterm+'.png')
