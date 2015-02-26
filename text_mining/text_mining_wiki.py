@@ -10,7 +10,7 @@ def translate_mult(n=0):
 		Track how Pattern's measure of subjectivity changes with each translation
 	"""
 	# initialize engines
-	w= Wikipedia(license=None, throttle=0.5, language=None)
+	w= Wikipedia(license=None)
 	g= Google(license=None, throttle=0.5, language=None)
 
 	# create list of language codes supported by Google Translate
