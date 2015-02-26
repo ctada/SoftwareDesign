@@ -32,10 +32,11 @@ for i in range(5): #first five pages
 			variationTot += fabs(positivity)
 			subTotal += subjectivity
 
-			avgPos = posTotal/sentIndex
-			variation = variationTot/sentIndex  # averages variation each time
-			avgSubject= subTotal/sentIndex	# average subjectivity
-engRes=(avgPos, variation, avgSubject) #storing
+		avgPos = posTotal/sentIndex
+		variation = variationTot/sentIndex  # averages variation each time
+		avgSubject= subTotal/sentIndex	# average subjectivity
+		controversy = (variation + avgSubject)/2.
+engRes=(avgPos, controversy) #storing
 
 #FRENCH
 posTotal= 0.0
@@ -55,10 +56,11 @@ for i in range(5): #first five pages
 			variationTot += fabs(positivity)
 			subTotal += subjectivity
 
-			avgPos = posTotal/sentIndex
-			variation = variationTot/sentIndex  # averages variation each time
-			avgSubject= subTotal/sentIndex	# average subjectivity
-frRes=(avgPos, variation, avgSubject) #storing
+		avgPos = posTotal/sentIndex
+		variation = variationTot/sentIndex  # averages variation each time
+		avgSubject= subTotal/sentIndex	# average subjectivity
+		controversy = (variation + avgSubject)/2.
+frRes=(avgPos, controversy) #storing
 
 #DUTCH
 posTotal= 0.0
@@ -78,27 +80,29 @@ for i in range(5): #first five pages
 			variationTot += fabs(positivity)
 			subTotal += subjectivity
 
-			avgPos = posTotal/sentIndex
-			variation = variationTot/sentIndex  # averages variation each time
-			avgSubject= subTotal/sentIndex	# average subjectivity
-deRes=(avgPos, variation, avgSubject) #storing
+		avgPos = posTotal/sentIndex
+		# controversy is calculated as the average of variation and subjectivity
+		variation = variationTot/sentIndex  # averages variation each time
+		avgSubject= subTotal/sentIndex	# average subjectivity
+		controversy = (variation + avgSubject)/2.
+deRes=(avgPos, controversy) #storing
 
 # Graph all
 
 N = 3
 #compPos   = (engRes[0], frRes[0], deRes[0])
-#compSubj = (engRes[2], frRes[2], deRes[2])
+#compContro = (engRes[1], frRes[1], deRes[1])
 fakeCompPos = (0.003, -.045, .00016)
 ind = np.arange(N)    # the x locations for the groups
 width = 0.35       # the width of the bars: can also be len(x) sequence
 
 p1 = plt.bar(ind, fakeCompPos,   width, color='r')
-#p2 = plt.bar(ind, compSubj, width, color='y') #to add second column for average subjectivity by language
+p2 = plt.bar(ind, compContro, width, color='y') #to add second column for average subjectivity by language
 
 plt.ylabel('Positivity towards search term')
 plt.title('Positivity by language spoken')
 plt.xticks(ind+width/2., ('English', 'French', 'Dutch') )
 plt.yticks(np.arange(-.5,.5,.1))
-#plt.legend( (p1[0], p2[0]), ('Men', 'Women') )
+plt.legend( (p1[0], p2[0]), ('Positivity', 'Controversy') )
 plt.savefig(keyterm+'.png')
 plt.show()
