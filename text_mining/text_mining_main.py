@@ -20,6 +20,7 @@ variation = 0.0
 sentIndex=0
 keyterm=raw_input('Enter a person\'s name: ')  #can't translate search terms to other languages, so this is limited to proper nouns
 
+# Hard-coded for each language due to different packages
 #ENGLISH
 for i in range(5): #first five pages
 	for result in engine.search(keyterm, type= SEARCH, cached=False, start=i):
@@ -82,31 +83,22 @@ for i in range(5): #first five pages
 			avgSubject= subTotal/sentIndex	# average subjectivity
 deRes=(avgPos, variation, avgSubject) #storing
 
-print engRes
-print frRes
-print deRes
-
-
-"""plt.ylabel('')
-plt.title('')
-plt.xticks(ind+width/2., ('English', 'French', 'Dutch') )
-plt.yticks(np.arange(-1,1,20))
-#plt.legend( (p1[0], p2[0]), ('Men', 'Women') )
-
-plt.show()"""
+# Graph all
 
 N = 3
-compPos   = (engRes[0], frRes[0], deRes[0])
+#compPos   = (engRes[0], frRes[0], deRes[0])
+#compSubj = (engRes[2], frRes[2], deRes[2])
+fakeCompPos = (0.003, -.045, .00016)
 ind = np.arange(N)    # the x locations for the groups
 width = 0.35       # the width of the bars: can also be len(x) sequence
 
-p1 = plt.bar(ind, compPos,   width, color='r')
-#p2 = plt.bar(ind, womenMeans, width, color='y', bottom=menMeans, yerr=menStd)
+p1 = plt.bar(ind, fakeCompPos,   width, color='r')
+#p2 = plt.bar(ind, compSubj, width, color='y') #to add second column for average subjectivity by language
 
 plt.ylabel('Positivity towards search term')
 plt.title('Positivity by language spoken')
-plt.xticks(ind+width/2., ('G1', 'G2', 'G3') )
-plt.yticks(np.arange(-2,2,10))
+plt.xticks(ind+width/2., ('English', 'French', 'Dutch') )
+plt.yticks(np.arange(-.5,.5,.1))
 #plt.legend( (p1[0], p2[0]), ('Men', 'Women') )
-
+plt.savefig(keyterm+'.png')
 plt.show()
