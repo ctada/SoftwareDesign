@@ -1,0 +1,19 @@
+Meanings of f,g,h scores:
+
+Each square has a g score that corresponds to the minimum number of squares that Paul has to move through in order to arrive at the square. As Paul moves along the optimal path, the g-score of each subsequent square increases by one because he had to move through the previous square to reach the new one. 
+Each square also has an h score that represents how many more squares he may have to move through in order to reach his destination from that square. Opposite to the g-score, the h-score decreases with each step Paul moves in the direction of cake because each step brings his closer. 
+
+The f-score is the total of the g-score and h-score. For most squares (except the lava tiles and those behind lava tiles), this total is 18. 
+
+Exercise 1: Paul Moves Diagonally
+
+ref. diag.png
+As seen in the bottom left corner, Paul still moves in a stepwise fashion to minimize cost. This is true no matter how long the diagonal is. Even though he has to move through more squares, the cost of moving one down, one over is still less than the 3 points necessary to move diagonally. However, Paul does move diagonally when he has no other choice, as shown in the middle of the board. 
+
+Exercise 2: 
+ref. jump.png
+Faced with a river of lava, Paul is forced to jump across. Since jumping in a cardinal direction and jumping diagonally have the same cost, Paul takes advantage of the discount and jumps diagonally. 
+
+Exercise 3: 
+ref. swamp.png
+See code. 
