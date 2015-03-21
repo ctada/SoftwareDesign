@@ -123,6 +123,15 @@ def evaluate_text(message, goal_text, verbose=VERBOSE):
         print "{msg:60}\t[Distance: {dst}]".format(msg=message, dst=distance)
     return (distance, )     # Length 1 tuple, required by DEAP
 
+def crossover(message1, message2): 
+    ind1= random.randint(min(len(message1), len(message2))) 
+    ind2= random.randint(min(len(message1), len(message2)))  # index cannot equal length due to initial zero index
+    mind = min(ind1, ind2)
+    maxind= max(ind1, ind2) 
+    m1 = message1[0:mind]+message2[mind:maxind]+message1[maxind:]
+    m2 = message2[0:mind]+message1[mind:maxind]+message2[maxind:]
+
+    return (m1, m2)
 
 def mutate_text(message, prob_ins=0.05, prob_del=0.05, prob_sub=0.05):
     """
@@ -166,7 +175,7 @@ def get_toolbox(text):
 
     # Genetic operators
     toolbox.register("evaluate", evaluate_text, goal_text=text)
-    toolbox.register("mate", tools.cxTwoPoint)
+    toolbox.register("mate", crossover) #pass in parameters?
     toolbox.register("mutate", mutate_text)
     toolbox.register("select", tools.selTournament, tournsize=3)
 
