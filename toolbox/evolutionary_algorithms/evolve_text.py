@@ -91,9 +91,25 @@ class Message(list):
 #-----------------------------------------------------------------------------
 # Genetic operators
 #-----------------------------------------------------------------------------
+def levenshtein_distance(s1, target):
+    """ 
+    Computes the Levenshtein distance between two input strings, with memoization
+    """
+    known={}
+    #print s1, target
+    if len(s1) == 0:
+        return len(target)
+    elif len(target) == 0:
+        return len(s1)
+    elif (s1, target) in known:
+        return known[(s1, target)]
+    else:
+        # calculates and takes minimum of cost when substituting, adding a character, and removing a character, respectively
+        min_cost = min([int(s1[0] != target[0]) + levenshtein_distance(s1[1:], target[1:]), 1+ levenshtein_distance(s1[1:],target), 1+levenshtein_distance(s1,target[1:]) ])
+        known[s1,target] = min_cost
+        #print min_cost
+        return min_cost
 
-# TODO: Implement levenshtein_distance function (see Day 9 in-class exercises)
-# HINT: Now would be a great time to implement memoization if you haven't
 
 def evaluate_text(message, goal_text, verbose=VERBOSE):
     """
@@ -102,6 +118,7 @@ def evaluate_text(message, goal_text, verbose=VERBOSE):
     If verbose is True, print each Message as it is evaluated.
     """
     distance = levenshtein_distance(message.get_text(), goal_text)
+    print distance
     if verbose:
         print "{msg:60}\t[Distance: {dst}]".format(msg=message, dst=distance)
     return (distance, )     # Length 1 tuple, required by DEAP
