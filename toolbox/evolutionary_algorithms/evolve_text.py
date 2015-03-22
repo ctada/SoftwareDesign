@@ -118,18 +118,18 @@ def evaluate_text(message, goal_text, verbose=VERBOSE):
     If verbose is True, print each Message as it is evaluated.
     """
     distance = levenshtein_distance(message.get_text(), goal_text)
-    print distance
+    #print distance
     if verbose:
         print "{msg:60}\t[Distance: {dst}]".format(msg=message, dst=distance)
     return (distance, )     # Length 1 tuple, required by DEAP
 
 def crossover(message1, message2): 
-    ind1= random.randint(min(len(message1), len(message2))) 
-    ind2= random.randint(min(len(message1), len(message2)))  # index cannot equal length due to initial zero index
+    ind1= random.randint(0, min(len(message1), len(message2))) 
+    ind2= random.randint(0, min(len(message1), len(message2)))  # index cannot equal length due to initial zero index
     mind = min(ind1, ind2)
     maxind= max(ind1, ind2) 
-    m1 = message1[0:mind]+message2[mind:maxind]+message1[maxind:]
-    m2 = message2[0:mind]+message1[mind:maxind]+message2[maxind:]
+    m1 = "".join(message1[0:mind]+ message2[mind:maxind]+ message1[maxind:])
+    m2 = "".join(message2[0:mind]+ message1[mind:maxind]+ message2[maxind:])
 
     return (m1, m2)
 
@@ -147,13 +147,18 @@ def mutate_text(message, prob_ins=0.05, prob_del=0.05, prob_sub=0.05):
     """
 
     if random.random() < prob_ins:
-        # TODO: Implement insertion-type mutation
-        pass
+        rand_ind= random.randint(0, len(message))
+        rand_char = VALID_CHARS[random.randint(0, len(VALID_CHARS))]
+        message.insert(rand_ind, rand_char)
 
-    # TODO: Also implement deletion and substitution mutations
-    # HINT: Message objects inherit from list, so they also inherit
-    #       useful list methods
-    # HINT: You probably want to use the VALID_CHARS global variable
+    if random.random() < prob_del:
+        rand_ind= random.randint(0, len(message))
+        del message[rand_ind]
+
+    if random.random() < prob_sub:
+        rand_ind= random.randint(0, len(message))
+        rand_char = VALID_CHARS[random.randint(0, len(VALID_CHARS))]
+        message[rand_ind]= rand_char
 
     return (message, )   # Length 1 tuple, required by DEAP
 
@@ -196,7 +201,7 @@ def evolve_string(text):
 
     # Get configured toolbox and create a population of random Messages
     toolbox = get_toolbox(text)
-    pop = toolbox.population(n=300)
+    pop = toolbox.population(n=700)
 
     # Collect statistics as the EA runs
     stats = tools.Statistics(lambda ind: ind.fitness.values)
@@ -209,9 +214,9 @@ def evolve_string(text):
     # (See: http://deap.gel.ulaval.ca/doc/dev/api/algo.html for details)
     pop, log = algorithms.eaSimple(pop,
                                    toolbox,
-                                   cxpb=0.5,    # Prob. of crossover (mating)
+                                   cxpb=0.7,    # Prob. of crossover (mating)
                                    mutpb=0.2,   # Probability of mutation
-                                   ngen=500,    # Num. of generations to run
+                                   ngen=700,    # Num. of generations to run
                                    stats=stats)
 
     return pop, log

@@ -1,0 +1,15 @@
+What is the general trend in the curve?
+
+Overall, the curve trends upward. Test accuracy increases dramatically with as the percentage of data used for training increases; this change in test accuracy gradually decreases. 
+
+Are there parts of the curve that appear to be noisier than others?  Why?
+
+The part of the curve before 50% of the data is used for training is noisier. This is likely due to the influence of chance; the classifier may be focusing on incorrect or less important features due to the low resolution of the training data. Once at least 50% of the data is used for training, the features considered by the classifier do not change as much. 
+
+How many trials do you need to get a smooth curve?
+
+Approximately 50 trials are necessary to attain a smooth curve. See accu_graph##trials.png images, where ## represents the number of trials. 
+
+Try different values for C (by changing LogisticRegression(C=10**-10)).  What happens?  If you want to know why this happens, see this Wikipedia page as well as the documentation for LogisticRegression in scikit-learn.
+
+As C increases, so does the starting accuracy of the model (with little training data). At C= 10**-10, accuracy with 5% of data used to train is approximately .2. At C= 10**-5, the minimum test accuracy is .3, which increases dramatically to .88 when C= 10**-1. Note that increasing the C value from C = 10**-1 to its default of 1 (10**0) makes a negligible difference to minimum test accuracy. 
