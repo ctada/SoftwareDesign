@@ -8,9 +8,12 @@ from pattern.nl import sentiment as sentimentNL
 import numpy as np
 import matplotlib.pyplot as plt
 from math import fabs
+#Why is this all commented out??
 """
 # import and parse through text
 engine = Google(license=None) # Enter your license key.
+
+#Make the below a function called reset() so you don't have to continue calling this
 posTotal= 0.0
 avgPos = 0.0
 subTotal = 0.0
@@ -22,6 +25,9 @@ keyterm=raw_input('Enter a person\'s name: ')  #can't translate search terms to 
 
 # Hard-coded for each language due to different packages
 #ENGLISH
+
+#You can definately put this into a function, just have to be careful of what you name your inputs and outputs
+
 for i in range(5): #first five pages
 	for result in engine.search(keyterm, type= SEARCH, cached=False, start=i):
 		txt= repr(plaintext(result.text))
@@ -90,9 +96,9 @@ deRes=(avgPos, controversy) #storing
 # Graph all
 keyterm = "Sample Search Term"
 N = 3
-#compPos   = (engRes[0], frRes[0], deRes[0])
+#compPos   = (engRes[0], frRes[0], deRes[0]) #delete unnecessary text
 #compContro = (engRes[1], frRes[1], deRes[1])
-fakeCompPos = (0.003, -.045, .00016)
+fakeCompPos = (0.003, -.045, .00016) #Not sure what this does, the variable name isn't clear
 fakeCompContro = (.06, .0047, .0001)
 ind = np.arange(N)    # the x locations for the groups
 width = 0.35       # the width of the bars: can also be len(x) sequence
