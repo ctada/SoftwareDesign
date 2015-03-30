@@ -10,9 +10,13 @@ class Date(object):
             year: the year (represented as an integer)
             This method will not validate whether a given date is invalid
             (e.g. April 31, 2000) """
+<<<<<<< HEAD
         self.month = month
         self.day = day
         self.year = year
+=======
+        pass
+>>>>>>> 5d728c19d7ef961a52d640267312c597cf953983
 
 
     def is_before(self,other_date):
@@ -23,6 +27,7 @@ class Date(object):
             >>> d1.is_before(d2)
             True
         """
+<<<<<<< HEAD
         if self.year<other_date.year:
             return True
         elif self.year == other_date.year:
@@ -36,6 +41,9 @@ class Date(object):
                 return False
         else:
             return False
+=======
+        pass
+>>>>>>> 5d728c19d7ef961a52d640267312c597cf953983
 
 
     def __str__(self):
@@ -45,17 +53,26 @@ class Date(object):
         >>> print Date(3,26,2015)
         March, 26th 2015
         """
+<<<<<<< HEAD
         month_ref=dict(zip(range(1,13), ['January','February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']))
         return str.format('{month}, {day}th {year}', month=month_ref[self.month], day= self.day, year=self.year)
+=======
+        pass
+>>>>>>> 5d728c19d7ef961a52d640267312c597cf953983
 
     def increment_year(self):
         """ Modifies the Date object self so that it represents a date of the
             same month and day but for the following year. """
+<<<<<<< HEAD
         self.year += 1
+=======
+        pass
+>>>>>>> 5d728c19d7ef961a52d640267312c597cf953983
 
     def is_leap_year(self):
         """ Returns true if the year that this date falls in is a leap year
             see: http://en.wikipedia.org/wiki/Leap_year
+<<<<<<< HEAD
             A leap year is every 4 years, but not every 100 years, then again every 400 years.
 
             Note: please add appropriate doctests BEFORE you start coding 
@@ -75,6 +92,11 @@ class Date(object):
             return False
         else:
             return True
+=======
+
+            Note: please add appropriate doctests BEFORE you start coding """
+        pass
+>>>>>>> 5d728c19d7ef961a52d640267312c597cf953983
 
 if __name__ == '__main__':
     import doctest

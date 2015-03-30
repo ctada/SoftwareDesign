@@ -124,8 +124,8 @@ def evaluate_text(message, goal_text, verbose=VERBOSE):
     return (distance, )     # Length 1 tuple, required by DEAP
 
 def crossover(message1, message2): 
-    ind1= random.randint(0, min(len(message1), len(message2))) 
-    ind2= random.randint(0, min(len(message1), len(message2)))  # index cannot equal length due to initial zero index
+    ind1= random.randint(0, min(len(message1), len(message2))-1) 
+    ind2= random.randint(0, min(len(message1), len(message2))-1) 
     mind = min(ind1, ind2)
     maxind= max(ind1, ind2) 
     m1 = "".join(message1[0:mind]+ message2[mind:maxind]+ message1[maxind:])
